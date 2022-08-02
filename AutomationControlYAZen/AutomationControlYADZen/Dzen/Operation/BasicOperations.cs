@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using AutomationControlYADZen.Dzen.Pages;
 using BasicOperations;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -9,7 +10,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace AutomationControlYADZen.Dzen;
 
-public class BasicOperation : UiTestBase
+public class BasicOperations : UiTestBase
 {
     internal static ResponseGetPhoneNomber ResponseGetPhoneNomber;
     private static ResponseGetSmsCode _responseGetSmsCode;
@@ -63,10 +64,10 @@ public class BasicOperation : UiTestBase
                     .Count > 0)
                 {
                     // Установка статутса номер уже использован, забанен на номер
-                    await GetSmsCode.TelNomberStatusEnd(UiTestBase.Host, UiTestBase.ApiKey, idNum);
+                    await GetSmsCodee.TelNomberStatusEnd(UiTestBase.Host, UiTestBase.ApiKey, idNum);
                     var interTel2 = Driver.FindElement(By.XPath("//input[@data-t='field:input-phone']"));
                     interTel2.SendKeys("\b\b\b\b\b\b\b\b\b\b");
-                    ResponseGetPhoneNomber = await GetSmsCode.GetTelephoneNomber(UiTestBase.Host, UiTestBase.ApiGetPhoneNomber);
+                    ResponseGetPhoneNomber = await GetSmsCodee.GetTelephoneNomber(UiTestBase.Host, UiTestBase.ApiGetPhoneNomber);
                     long telNumber2 = ResponseGetPhoneNomber.TelNomber;
                     string idNum2 = ResponseGetPhoneNomber.IdNum;
                     interTel.SendKeys((telNumber2 - 70000000000).ToString());
@@ -88,7 +89,7 @@ public class BasicOperation : UiTestBase
                             .Count > 0)
                     {
                         // Установка статутса номер уже использован, забанен на номер
-                        await GetSmsCode.TelNomberStatusEnd(UiTestBase.Host, UiTestBase.ApiKey, idNum2);
+                        await GetSmsCodee.TelNomberStatusEnd(UiTestBase.Host, UiTestBase.ApiKey, idNum2);
                         Driver.Close();
                         Driver.Quit();
                         Assert.Fail("Оба номера недоступны. Дальнейшие действия бесполезны");
@@ -111,14 +112,14 @@ public class BasicOperation : UiTestBase
                 }
                 //Получаем СМС код
                 Thread.Sleep(20000);
-                string code = await GetSmsCode.GetSmsCode(Host, ApiKey, idNum);
+                string code = await GetSmsCodee.GetSmsCode(Host, ApiKey, idNum);
                 if (code == null)
                 {
                     int countM = 0;
                     for (int m = 1; m <= 3; m++)
                     {
                         Thread.Sleep(3000);
-                        code = await GetSmsCode.GetSmsCode(Host, ApiKey, idNum);
+                        code = await GetSmsCodee.GetSmsCode(Host, ApiKey, idNum);
                         countM += 1;
                         if (code != null) break;
                     }
@@ -146,7 +147,7 @@ public class BasicOperation : UiTestBase
                         int countN = 0;
                         for (int n = 0; n <= 2; n++)
                         {
-                            code = await GetSmsCode.GetSmsCode(Host, ApiKey, idNum);
+                            code = await GetSmsCodee.GetSmsCode(Host, ApiKey, idNum);
                             countN += 1;
                             if (code != null) break;
                         }
@@ -169,7 +170,7 @@ public class BasicOperation : UiTestBase
             var registrationOk = Driver.FindElement(By.XPath("//button[@data-t='button:action']"));
             registrationOk.Click();
             Thread.Sleep(1500);
-            await GetSmsCode.TelNomberStatusSend(Host, ApiKey, idNum);
+            await GetSmsCodee.TelNomberStatusSend(Host, ApiKey, idNum);
         }
      public static async Task<bool> Auth(WebDriver Driver, WebDriverWait Wait, int i, string Login, string Password,
          string idNum, string? NewPassword, int? a1)
@@ -268,7 +269,7 @@ public class BasicOperation : UiTestBase
                             await telStatusGetNewSms1.GetAsync(addressTelStatusGetNewSms1, new CancellationToken());
                         //Получаем новый СМС
                         Thread.Sleep(30000);
-                        ResponseGetPhoneNomber = await GetSmsCode.GetTelephoneNomber(Host, ApiGetPhoneNomber);
+                        ResponseGetPhoneNomber = await GetSmsCodee.GetTelephoneNomber(Host, ApiGetPhoneNomber);
                         string codeNew1 = ResponseGetSmsCode.SmsCode;
                         //ВВодим СМС код
                         var inputNewSms1 = Driver.FindElement(By.XPath("//input[@data-t='field:input-phoneCode']"));
@@ -352,11 +353,11 @@ public class BasicOperation : UiTestBase
                                 "//div[@class='auth-challenge-form-hint'][contains(text(), 'Ваш номер телефона:')]"))
                         .Count > 0)
                 {
-                    GetSmsCode.TelNomberStatusSend(Host, ApiKey, idNum);
+                    GetSmsCodee.TelNomberStatusSend(Host, ApiKey, idNum);
                     Driver.FindElement(By.XPath("//button[@data-t='button:action']")).Click();
                     //Получаем новый СМС
                     Thread.Sleep(30000);
-                    string codeNew1 = await GetSmsCode.GetSmsCode(Host, ApiKey, idNum);
+                    string codeNew1 = await GetSmsCodee.GetSmsCode(Host, ApiKey, idNum);
                     //ВВодим СМС код
                     var inputNewSms1 = Driver.FindElement(By.XPath("//input[@data-t='field:input-phoneCode']"));
                     inputNewSms1.SendKeys(codeNew1);

@@ -3,10 +3,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using BasicOperations;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace AutomationControlYADZen.Dzen.BasicOperation;
+namespace AutomationControlYADZen.Dzen;
 
     public static partial class GetSmsCodee
     {
